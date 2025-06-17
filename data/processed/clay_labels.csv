@@ -1,0 +1,9 @@
+component_type,semantic_label,complexity_score,usage_frequency
+button,interactive,0.3,0.9
+navigation,navigation,0.7,0.8
+form,input,0.8,0.6
+header,header,0.4,0.95
+footer,footer,0.2,0.9
+card,content,0.5,0.7
+sidebar,navigation,0.6,0.4
+widget,display,0.4,0.5
