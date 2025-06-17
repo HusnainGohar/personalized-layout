@@ -37,7 +37,7 @@ class VAE(nn.Module):
 
 if __name__ == "__main__":
     # 2. Load real preprocessed data if available
-    csv_path = "data/processed/your_processed_file.csv"  # <-- Update this path!
+    csv_path = "data/processed/vae_combined_features.csv"  # <-- Update this path!
     batch_size = 4
     latent_dim = 8
     hidden_dim = 64
