@@ -1,0 +1,14 @@
+# Ignore node modules
+node_modules/
+
+# Ignore all log files
+*.log
+
+# Ignore environment files
+.env
+
+# Ignore build output
+dist/
+# Ignore large processed CSV files
+data/processed/clay_labels_processed.csv
+data/processed/*.csv
