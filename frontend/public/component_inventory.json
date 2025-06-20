@@ -1,0 +1,24 @@
+[
+  {
+    "id": "product_card",
+    "type": "card",
+    "fields": ["image", "title", "price", "cta_button"],
+    "variants": ["default", "featured"]
+  },
+  {
+    "id": "promo_banner",
+    "type": "banner",
+    "fields": ["image", "headline", "cta_button"],
+    "variants": ["sale", "info"]
+  },
+  {
+    "id": "navbar",
+    "type": "navigation",
+    "fields": ["logo", "links"]
+  },
+  {
+    "id": "checkout_form",
+    "type": "form",
+    "fields": ["name", "email", "address", "payment_method"]
+  }
+]

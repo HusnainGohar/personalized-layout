@@ -8,7 +8,7 @@ input_dim = df.shape[1]
 
 # Load the trained VAE model
 vae = VAE(input_dim=input_dim, latent_dim=8, hidden_dim=64)
-vae.load_state_dict(torch.load('vae_trained.pth'))
+vae.load_state_dict(torch.load('model\vae_trained.pth'))
 vae.eval()  # Set to evaluation mode
 
 # Prepare a batch of data for inference

@@ -63,8 +63,10 @@ for epoch in range(epochs):
     print(f"Epoch {epoch+1}/{epochs}, Loss: {avg_loss:.4f}")
 
 # Save the trained model with robust path handling
-model_save_path = os.path.join(script_dir, 'vae_trained.pth')
+model_save_path = os.path.join(script_dir, 'models', 'vae_trained.pth')  # Simplified path
+os.makedirs(os.path.dirname(model_save_path), exist_ok=True)  # Create directories if missing
 torch.save(vae.state_dict(), model_save_path)
+
 print(f'Model saved at: {model_save_path}')
 
 # Save training losses for analysis

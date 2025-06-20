@@ -1,0 +1,26 @@
+[
+  {
+    "layout_id": 0,
+    "behavior": "explorative",
+    "width": 270.66473722457886,
+    "height": 144.52368825674057,
+    "background": "rgb(186, 205, 222)",
+    "border_radius": 13.207340836524963
+  },
+  {
+    "layout_id": 1,
+    "behavior": "focused",
+    "width": 270.33777832984924,
+    "height": 144.75775063037872,
+    "background": "rgb(185, 205, 222)",
+    "border_radius": 13.018660545349121
+  },
+  {
+    "layout_id": 2,
+    "behavior": "casual",
+    "width": 269.617440700531,
+    "height": 144.96380627155304,
+    "background": "rgb(187, 205, 222)",
+    "border_radius": 13.109437346458435
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "event": { "section": "home", "action": "click" },
+    "features": [1.2, 0.8, 1.5, 0.7, 0.4, 0.9, 1, 1],
+    "width": 320,
+    "height": 220
+  },
+  {
+    "event": { "section": "products", "action": "scroll" },
+    "features": [-1.0, -0.5, -1.2, -0.8, -0.6, -0.7, 0, 0],
+    "width": 220,
+    "height": 180
+  }
+]
