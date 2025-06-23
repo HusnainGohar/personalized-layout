@@ -21,6 +21,7 @@ print(f"Looking for data at: {data_path}")
 try:
     df = pd.read_csv(data_path)
     print("✅ CSV file loaded successfully!")
+    print("[DEBUG] Training data shape:", df.shape)
 except FileNotFoundError:
     print(f"❌ Error: File not found at {data_path}")
     # Add fallback or exit logic here
@@ -31,6 +32,7 @@ batch_size = 32
 dataset = TensorDataset(x)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 input_dim = x.shape[1]  # Use [1] to get feature dimension
+print(f"[DEBUG] input_dim for VAE: {input_dim}")
 
 # Model setup
 vae = VAE(input_dim=input_dim, latent_dim=8, hidden_dim=64)
@@ -64,6 +66,7 @@ for epoch in range(epochs):
 
 # Save the trained model with robust path handling
 model_save_path = os.path.join(script_dir, 'models', 'vae_trained.pth')  # Simplified path
+print(f"[DEBUG] Model will be saved to: {os.path.abspath(model_save_path)}")
 os.makedirs(os.path.dirname(model_save_path), exist_ok=True)  # Create directories if missing
 torch.save(vae.state_dict(), model_save_path)
 

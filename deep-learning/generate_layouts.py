@@ -31,10 +31,11 @@ from models.vae_model import VAE  # Adjust import if needed
 # Paths
 script_dir = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(script_dir, "models", "vae_trained.pth")
+print(f"[DEBUG] Model will be loaded from: {os.path.abspath(model_path)}")
 output_path = os.path.join(script_dir, "..", "..", "frontend", "public", "generatedLayouts.json")
 
 # Model parameters (must match training)
-input_dim = 60      # Set this to your actual input_dim
+input_dim = 68      # Must match the number of columns in vae_combined_features.csv
 latent_dim = 8
 hidden_dim = 64
 
