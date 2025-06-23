@@ -77,6 +77,30 @@ app.post('/api/generate-layout', (req, res) => {
   });
 });
 
+// Function to run retraining pipeline
+function retrainModel() {
+  console.log('Starting automatic retraining...');
+  const retrainScript = path.join(__dirname, '..', 'retrain_pipeline.bat');
+  const projectRoot = path.join(__dirname, '..');
+  exec(`"${retrainScript}"`, { cwd: projectRoot }, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Retrain error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`Retrain stderr: ${stderr}`);
+      return;
+    }
+    console.log(`Retrain output: ${stdout}`);
+  });
+}
+
+// Run retraining every 24 hours (86,400,000 ms)
+setInterval(retrainModel, 24 * 60 * 60 * 1000);
+
+// Optionally, run once on server start
+retrainModel();
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -20,7 +20,7 @@ print(f"Looking for data at: {data_path}")
 # Data loading with error handling
 try:
     df = pd.read_csv(data_path)
-    print("✅ CSV file loaded successfully!")
+    print("CSV file loaded successfully!")
     print("[DEBUG] Training data shape:", df.shape)
 except FileNotFoundError:
     print(f"❌ Error: File not found at {data_path}")
@@ -80,6 +80,6 @@ print(f'Training losses saved at: {losses_save_path}')
 
 # Verify model file exists
 if os.path.exists(model_save_path):
-    print("✅ Model file created successfully!")
+    print("Model file created successfully!")
 else:
     print("❌ Error: Model file not created!")

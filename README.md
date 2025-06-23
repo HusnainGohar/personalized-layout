@@ -82,6 +82,22 @@ python deep-learning/generate_layouts.py
 
 ---
 
+## Automatic Retraining and Layout Generation
+
+**No manual steps required!**
+
+- The backend server (`server.js`) automatically runs the full retraining pipeline (data aggregation, feature combination, model training, and layout generation) once on startup and then every 24 hours.
+- All you need to do is start the backend:
+  ```bash
+  node backend/server.js
+  ```
+- The system will keep itself up-to-date with the latest user data and generate new layouts for the frontend automatically.
+- No need to run any batch files, Python scripts, or set up scheduled tasks—everything is handled for you.
+
+**If you want to change the retraining interval, edit the timer in `backend/server.js`.**
+
+---
+
 ## Retraining the Model
 If you want to retrain the VAE model (e.g., after updating data):
 
