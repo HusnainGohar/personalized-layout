@@ -1613,3 +1613,4 @@
 {"eventType":"click","eventData":{"component":"analytics-card"},"timestamp":1750668446770}
 {"eventType":"click","eventData":{"x":962,"y":507,"target":"DIV"},"timestamp":1750668446771}
 {"eventType":"click","eventData":{"x":1093,"y":632,"target":"HTML"},"timestamp":1750668789282}
+{"eventType":"scroll","eventData":{"scrollY":100},"timestamp":1750669861346}
