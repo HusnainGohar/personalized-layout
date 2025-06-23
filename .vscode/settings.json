@@ -1,5 +1,8 @@
 {
     "python.analysis.extraPaths": [
         "./deep-learning/model"
+    ],
+    "cursorpyright.analysis.extraPaths": [
+        "./deep-learning/model"
     ]
 }

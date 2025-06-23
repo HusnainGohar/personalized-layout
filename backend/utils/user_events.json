@@ -1,1 +1,10 @@
- 
+ {"eventType":"test","eventData":{"foo":"bar"}}
+
+{"eventType":"test","eventData":{"foo":"bar"}}
+{"eventType":"test","eventData":{"foo":"bar"}}
+{"eventType":"click","eventData":{"x":1172,"y":514,"target":"ASIDE"},"timestamp":1750661413885}
+{"eventType":"scroll","eventData":{"scrollY":87},"timestamp":1750661466185}
+{"eventType":"scroll","eventData":{"scrollY":0},"timestamp":1750661466451}
+{"eventType":"scroll","eventData":{"scrollY":87},"timestamp":1750661466650}
+{"eventType":"scroll","eventData":{"scrollY":0},"timestamp":1750661466840}
+{"eventType":"scroll","eventData":{"scrollY":87},"timestamp":1750661467051}
