@@ -25,6 +25,7 @@
 import torch
 import json
 import os
+import sys
 from models.vae_model import VAE  # Adjust import if needed
 
 # Paths
@@ -42,8 +43,22 @@ vae = VAE(input_dim=input_dim, latent_dim=latent_dim, hidden_dim=hidden_dim)
 vae.load_state_dict(torch.load(model_path))
 vae.eval()
 
-# Generate a single adaptive card layout
-z = torch.randn(1, latent_dim)
+# Check for feature vector argument
+if len(sys.argv) > 1:
+    try:
+        feature_vector = json.loads(sys.argv[1])
+        feature_tensor = torch.tensor([feature_vector], dtype=torch.float32)
+        # Encode to latent space
+        with torch.no_grad():
+            mu, logvar = vae.encode(feature_tensor)
+            z = mu  # Use mean for deterministic output
+    except Exception as e:
+        print(f"Error parsing feature vector: {e}")
+        z = torch.randn(1, latent_dim)
+else:
+    z = torch.randn(1, latent_dim)
+
+# Decode to layout features
 features = vae.decode(z).detach().numpy().tolist()[0]
 
 # Prepare output
@@ -54,4 +69,4 @@ os.makedirs(os.path.dirname(output_path), exist_ok=True)
 with open(output_path, 'w') as f:
     json.dump(layout, f, indent=2)
 
-print(f"✅ Layout generated and saved to {output_path}")
+print(f"Layout generated and saved to {output_path}")
