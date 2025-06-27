@@ -69,17 +69,13 @@ export default function GenUIRenderer() {
 
   // Fetch adaptive layout JSON from backend
   useEffect(() => {
-    fetch("http://localhost:5000/api/generate-layout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" }
-    })
+    fetch("/generatedLayouts.json")
       .then(res => {
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();
       })
       .then(data => {
-        setLayouts(data.layout);
-        setFeatureVector(data.featureVector || []);
+        setLayouts(data);
       })
       .catch(err => setError(err.message));
   }, []);
@@ -102,26 +98,26 @@ export default function GenUIRenderer() {
   const layout = layouts[current];
   const styles = getAdaptiveStyles(layout.features);
 
-  // Card reordering logic
-  const cardDefs = [
-    { id: 'analytics-card', content: (
-      <div style={styles.card} onClick={() => logUserEvent('click', { component: 'analytics-card' })}>
+  // Card definitions for rendering
+  const cardContent = {
+    'analytics-card': (
+      <div style={styles.card}>
         <div style={{ fontWeight: 700, fontSize: "1.2em", marginBottom: 8 }}>Analytics Overview</div>
         <div style={{ fontSize: "1.05em", color: "#1976d2" }}>Sessions: <b>1,245</b></div>
         <div style={{ fontSize: "1.05em", color: "#1976d2" }}>Active Users: <b>87</b></div>
         <div style={{ fontSize: "1.05em", color: "#1976d2" }}>Bounce Rate: <b>32%</b></div>
       </div>
-    ) },
-    { id: 'profile-card', content: (
-      <div style={styles.card} onClick={() => logUserEvent('click', { component: 'profile-card' })}>
+    ),
+    'profile-card': (
+      <div style={styles.card}>
         <div style={{ fontWeight: 700, fontSize: "1.2em", marginBottom: 8 }}>User Profile</div>
         <div style={{ fontSize: "1.05em" }}><b>Name:</b> Jane Doe</div>
         <div style={{ fontSize: "1.05em" }}><b>Email:</b> jane.doe@email.com</div>
         <div style={{ fontSize: "1.05em" }}><b>Status:</b> Active</div>
       </div>
-    ) },
-    { id: 'notifications-card', content: (
-      <div style={styles.card} onClick={() => logUserEvent('click', { component: 'notifications-card' })}>
+    ),
+    'notifications-card': (
+      <div style={styles.card}>
         <div style={{ fontWeight: 700, fontSize: "1.2em", marginBottom: 8 }}>Notifications</div>
         <ul style={{ paddingLeft: 18, fontSize: "1.05em" }}>
           <li>🔔 New message from support</li>
@@ -129,85 +125,91 @@ export default function GenUIRenderer() {
           <li>🔔 System update available</li>
         </ul>
       </div>
-    ) }
-  ];
-  // Map card IDs to featureVector indices
-  const cardOrder = [3, 4, 5]; // analytics-card, profile-card, notifications-card
-  const sortedCards = cardDefs
-    .map((card, i) => ({ ...card, clicks: featureVector[cardOrder[i]] || 0 }))
-    .sort((a, b) => b.clicks - a.clicks);
+    )
+  };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#e3eafc", display: "flex", flexDirection: "column" }}>
-      {/* Header */}
-      <header style={styles.header} role="banner">
-        <div style={{ fontWeight: 700, fontSize: "2.1em", letterSpacing: 1 }}>GenUI Adaptive Platform</div>
-        <nav role="navigation" aria-label="Main Navigation" style={{ marginTop: 12 }}>
-          <a href="#" style={{ color: "#fff", margin: "0 28px", textDecoration: "none", fontWeight: 600, fontSize: "1.1em" }}>Home</a>
-          <a href="#" style={{ color: "#fff", margin: "0 28px", textDecoration: "none", fontWeight: 600, fontSize: "1.1em" }}>Features</a>
-          <a href="#" style={{ color: "#fff", margin: "0 28px", textDecoration: "none", fontWeight: 600, fontSize: "1.1em" }}>About</a>
-        </nav>
-      </header>
-
-      <div style={{ display: "flex", flex: 1, flexDirection: "row", width: "100%", maxWidth: 1400, margin: "0 auto" }}>
-        {/* Sidebar */}
-        <aside style={styles.sidebar} aria-label="Sidebar">
-          <div style={{ fontWeight: 700, marginBottom: 18, fontSize: "1.3em", color: "#1976d2" }}>Welcome, User!</div>
-          <div style={{ marginBottom: 18, fontSize: "1.05em" }}>
-            <b>Profile:</b> <span style={{ color: "#1976d2" }}>Pro Member</span>
-          </div>
-          <div style={{ marginBottom: 18, fontSize: "1.05em" }}>
-            <b>Notifications:</b> <span style={{ color: "#1976d2" }}>3 new</span>
-          </div>
-          <div style={{ marginTop: 24, fontSize: "1.05em" }}>
-            <ul style={{ paddingLeft: 18, listStyle: "none" }}>
-              <li style={{ marginBottom: 10 }} onClick={() => logUserEvent('click', { component: 'dashboard-menu' })}><span role="img" aria-label="dashboard">📊</span> Dashboard</li>
-              <li style={{ marginBottom: 10 }} onClick={() => logUserEvent('click', { component: 'profile-menu' })}><span role="img" aria-label="profile">👤</span> Profile</li>
-              <li style={{ marginBottom: 10 }} onClick={() => logUserEvent('click', { component: 'settings-menu' })}><span role="img" aria-label="settings">⚙️</span> Settings</li>
-            </ul>
-          </div>
-        </aside>
-
-        {/* Main Content */}
-        <main style={styles.content} role="main">
-          <div style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
-            {sortedCards.map(card => card.content)}
-          </div>
-          {/* Main Adaptive Card */}
-          <div style={{ ...styles.card, marginTop: 32, minWidth: 320 }}>
-            <h2 style={{ margin: 0, color: "#1976d2", fontWeight: 700, fontSize: "2em" }}>
-              Adaptive Card Demo
-            </h2>
-            <p style={{ margin: "18px 0 0 0" }}>
-              This area will adapt its style, spacing, and layout based on the generative model output.<br />
-              <span style={{ color: "#1976d2", fontWeight: 600 }}>Try retraining or changing the VAE features!</span>
-            </p>
-            <button
-              style={{
-                marginTop: 26,
-                padding: "12px 32px",
-                borderRadius: 8,
-                border: "none",
-                background: "#1976d2",
-                color: "#fff",
-                fontWeight: 700,
-                fontSize: "1.15rem",
-                boxShadow: "0 1px 4px #1976d255",
-                cursor: "pointer"
-              }}
-              aria-label="Trigger adaptive action"
-              onClick={() => { logUserEvent('click', { component: 'adaptive-action-btn' }); alert("Action triggered!"); }}
-            >
-              Action
-            </button>
-          </div>
-        </main>
+    <div>
+      <div style={{background: '#ffeeba', color: '#333', padding: 10, margin: 10, borderRadius: 6}}>
+        <b>DEBUG:</b> Layouts loaded: {JSON.stringify(layouts)}
       </div>
+      <div style={{ minHeight: "100vh", background: "#e3eafc", display: "flex", flexDirection: "column" }}>
+        {/* Header */}
+        <header style={styles.header} role="banner">
+          <div style={{ fontWeight: 700, fontSize: "2.1em", letterSpacing: 1 }}>GenUI Adaptive Platform</div>
+          <nav role="navigation" aria-label="Main Navigation" style={{ marginTop: 12 }}>
+            <a href="#" style={{ color: "#fff", margin: "0 28px", textDecoration: "none", fontWeight: 600, fontSize: "1.1em" }}>Home</a>
+            <a href="#" style={{ color: "#fff", margin: "0 28px", textDecoration: "none", fontWeight: 600, fontSize: "1.1em" }}>Features</a>
+            <a href="#" style={{ color: "#fff", margin: "0 28px", textDecoration: "none", fontWeight: 600, fontSize: "1.1em" }}>About</a>
+          </nav>
+        </header>
 
-      {/* Footer */}
-      <footer style={styles.footer} role="contentinfo">
-        &copy; {new Date().getFullYear()} GenUI Adaptive Platform &mdash; Powered by VAE
-      </footer>
+        <div style={{ display: "flex", flex: 1, flexDirection: "row", width: "100%", maxWidth: 1400, margin: "0 auto" }}>
+          {/* Sidebar */}
+          <aside style={styles.sidebar} aria-label="Sidebar">
+            <div style={{ fontWeight: 700, marginBottom: 18, fontSize: "1.3em", color: "#1976d2" }}>Welcome, User!</div>
+            <div style={{ marginBottom: 18, fontSize: "1.05em" }}>
+              <b>Profile:</b> <span style={{ color: "#1976d2" }}>Pro Member</span>
+            </div>
+            <div style={{ marginBottom: 18, fontSize: "1.05em" }}>
+              <b>Notifications:</b> <span style={{ color: "#1976d2" }}>3 new</span>
+            </div>
+            <div style={{ marginTop: 24, fontSize: "1.05em" }}>
+              <ul style={{ paddingLeft: 18, listStyle: "none" }}>
+                <li style={{ marginBottom: 10 }} onClick={() => logUserEvent('click', { component: 'dashboard-menu' })}><span role="img" aria-label="dashboard">📊</span> Dashboard</li>
+                <li style={{ marginBottom: 10 }} onClick={() => logUserEvent('click', { component: 'profile-menu' })}><span role="img" aria-label="profile">👤</span> Profile</li>
+                <li style={{ marginBottom: 10 }} onClick={() => logUserEvent('click', { component: 'settings-menu' })}><span role="img" aria-label="settings">⚙️</span> Settings</li>
+              </ul>
+            </div>
+          </aside>
+
+          {/* Main Content */}
+          <main style={styles.content} role="main">
+            <div style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
+              {layouts
+                .filter(card => card.visible)
+                .map(card => (
+                  <React.Fragment key={card.component}>
+                    {cardContent[card.component]}
+                  </React.Fragment>
+                ))}
+            </div>
+            {/* Main Adaptive Card */}
+            <div style={{ ...styles.card, marginTop: 32, minWidth: 320 }}>
+              <h2 style={{ margin: 0, color: "#1976d2", fontWeight: 700, fontSize: "2em" }}>
+                Adaptive Card Demo
+              </h2>
+              <p style={{ margin: "18px 0 0 0" }}>
+                This area will adapt its style, spacing, and layout based on the generative model output.<br />
+                <span style={{ color: "#1976d2", fontWeight: 600 }}>Try retraining or changing the VAE features!</span>
+              </p>
+              <button
+                style={{
+                  marginTop: 26,
+                  padding: "12px 32px",
+                  borderRadius: 8,
+                  border: "none",
+                  background: "#1976d2",
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: "1.15rem",
+                  boxShadow: "0 1px 4px #1976d255",
+                  cursor: "pointer"
+                }}
+                aria-label="Trigger adaptive action"
+                onClick={() => { logUserEvent('click', { component: 'adaptive-action-btn' }); alert("Action triggered!"); }}
+              >
+                Action
+              </button>
+            </div>
+          </main>
+        </div>
+
+        {/* Footer */}
+        <footer style={styles.footer} role="contentinfo">
+          &copy; {new Date().getFullYear()} GenUI Adaptive Platform &mdash; Powered by VAE
+        </footer>
+      </div>
     </div>
   );
 }
